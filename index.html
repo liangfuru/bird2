@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	
+	#sub{width: 40px;height: 30px;position: absolute;left: 150px;top: 250px;/*z-index: 99;*/}
+	#main{width: 343px;height: 480px;border:1px solid black;margin:50px auto;position: relative;background-image: url(images/bg.jpg);overflow: hidden;}
+	#head{position:absolute; left: 80px;top: 70px;}
+	#img1{position: absolute;left: 60px;top: 250px;}
+	#img2{position: absolute;left: 200px;top: 250px;}
+	.down{vertical-align: middle;}
+	.up{vertical-align: middle;}
+	.barrier{position: absolute;top: 0;left: 0;}
+	.imgl{z-index: 10;}
+	.imgr{z-index: 10;}
+	</style>
+</head>
+<body>
+		<div id="main">	
+			<div id="sub">
+					<img src="images/down_bird0.png" alt="" id="img3">
+			</div>		
+			<div id="head">
+				<img src="images/head.jpg" alt="" id="img4">
+			</div>
+			<div id="start">
+				<img src="images/start.jpg" alt="" id="img1">
+				<img src="images/submit.jpg" alt="" id="img2">
+			</div>
+		</div>
+
+</body>
+<script type="text/javascript">
+	var img3=document.getElementById("img3");
+	var img4=document.getElementById("img4");
+	var sub=document.getElementById("sub");
+	var head=document.getElementById("head");
+	// console.log(img3);
+// img3.src="images/up_bird0.png";
+// img3.style.src="images/up_bird0.png";
+	var timer,timer2,timer3,timer4,timer6,timer9;
+	var t=0;
+	var c=0;
+	var ma=0;
+	// ma用于计数；
+	var flag=true;
+	var flag2=true;
+
+
+
+	var n=5;
+	// console.log(n);
+	var main=document.getElementById("main");
+	// var bg=document.getElementById("bg");
+	var img1=document.getElementById("img1");
+	// console.log(bg);
+	var heights = [];
+	var divs=[];
+	// var l1=0,l2=0,l3=0,r1=0,r2=0,r3=0,t1=0,t2=0,t3=0,b1=0,b2=0,b3=0;
+	img1.onclick=function(){
+		clearInterval(timer)
+		move();
+		bird();
+		img4.style.display="none";
+		start.style.display="none";
+		create(0,5);
+		// var imgl=document.createElement("img")
+		// imgl.appendChild(head)
+		// imgl.src="images/0.jpg"
+		// imgl.className="imgl";
+		// var imgr=document.createElement("img")
+		// imgr.appendChild(head)
+		// imgr.src="images/0.png";
+		// imgr.className="imgr";
+	  	function create(n1,n2){
+	  		for (var i = n1; i < n2; i++) {
+	  			if (i<=2) {
+	  			}else{
+  				// 数组的下标必须以0开头，才能正确获取
+		  			var oDiv=document.createElement("div");
+		  			var downBarrier=document.createElement("img");
+		  			var downbarrier=document.createElement("img");
+		  			var upBarrier=document.createElement("img");
+		  			var upbarrier=document.createElement("img");
+		  			downBarrier.innerHTML=i;
+		  			divs[i]=oDiv;
+		  			heights[i]=fnRand(100,280);
+		  			// console.log(divs[i]);
+	  				// console.log(heights[i])
+		  			oDiv.style.height="480px";
+		  			oDiv.style.width="62px";
+		  			downBarrier.src="images/down_pipe.png";
+		  			downbarrier.src="images/down_mod.png";
+		  			downbarrier.style.height=heights[i]-100+"px";
+		  			downbarrier.style.width="62px";
+		  			downBarrier.className="down";
+
+		  			upBarrier.src="images/up_pipe.png";
+		  			upbarrier.src="images/up_mod.png";
+		  			upbarrier.style.height=(480-heights[i]-120)+"px";
+		  			upbarrier.style.width="62px";
+		  			upbarrier.className="up";
+
+		  			downBarrier.style.marginTop="100px";
+		  			main.appendChild(oDiv);
+		  			oDiv.appendChild(upbarrier);
+		  			oDiv.appendChild(upBarrier);	  			
+		  			oDiv.appendChild(downBarrier);
+		  			oDiv.appendChild(downbarrier);	  			  			
+		  			oDiv.className="barrier";
+		  			divs[i].style.left=i*150+"px";
+		  		}
+	  		}	  	
+	  	}
+
+	  	timer2=setInterval(move1, 10)
+	  	function move1(){
+		  	var timer2;
+		  	var num=n;
+	  		// console.log(num);
+	  		var scrollLeft = main.scrollLeft;
+	  		// console.log(scrollLeft)
+			var clientWidth = main.clientWidth;
+	  		// console.log(clientWidth);
+	  		main.scrollLeft+=1;
+	  		if (main.scrollLeft+clientWidth==150*(num-1)+62) {
+	  			n+=5;  			
+	  			create(num,num+5);
+	  		};
+	  	}	  	
+	
+	}	
+
+	function fnRand(m,n){
+		var r=Math.round(Math.random()*(n-m)+m);
+		return r;
+	}
+
+// 小鸟点击事件
+	function fly1(){
+		if (flag) {
+			img3.src="images/down_bird0.png";
+			flag=false;
+			
+		}else{
+			img3.src="images/down_bird1.png";
+			flag=true;					
+		}		
+    }
+    timer3=setInterval(fly1, 1000)
+    function fly2(){
+		if (flag) {
+			img3.src="images/up_bird0.png";
+			flag=false;
+		}else{
+			img3.src="images/up_bird1.png";
+			flag=true;					
+		}		
+    }
+    timer4=setInterval(fly2, 1000)
+
+
+	function move(){
+		timer=setInterval(function(){
+		var d=t;
+		d++;
+		// console.log("s");
+		fly1();
+		// img3.src="images/down_bird0.png";
+		sub.style.top=sub.offsetTop+d+"px";
+		;
+		// console.log(sub.offsetTop)
+		// console.log(sub.style.top)
+		}, 10)		
+	}
+
+
+	function bird(){
+		var timer5=setInterval(move2,10);
+	}
+	function move2(){
+		var d=t;
+		d++;	
+		sub.style.left=sub.offsetLeft+d+"px";
+	}
+
+	document.onclick=function(){
+		clearInterval(timer)
+		fly2();
+		timer6=setInterval(function(){
+			var u=c;			
+			ma++;
+			u--;
+			// console.log(ma)
+			sub.style.top=sub.offsetTop+u+"px";
+			if (ma==30) {
+			clearInterval(timer6);
+			move();
+			ma=0;
+			}
+		},3)
+		
+	  
+		var timer10=setInterval(function(){
+				//看是否撞上了	
+			
+			var l1=sub.offsetLeft;
+			var r1=l1+sub.offsetWidth;
+			var t1=sub.offsetTop;		
+			var b1=t1+sub.offsetHeight;
+			// console.log(t1,b1)
+			for (var i = 3; i < divs.length; i++) {
+				var l2=divs[i].offsetLeft;
+				var r2=divs[i].offsetWidth+l2;
+				var t2=0;
+				var b2=480-heights[i]-60;
+
+				var l3=divs[i].offsetLeft;
+				var r3=divs[i].offsetWidth+l3;
+				var t3=b2+100;
+				var b3=480;
+				// console.log(b2,t3)
+				if (l1<r2 && r1>l2 && t1<b2 && b1>t2||t1==0||b1==480) {
+					alert("碰到了")
+					clearInterval(timer6);
+					clearInterval(timer2);
+					if (timer10) {
+						clearInterval(timer10);
+					};
+					// move();
+					window.location.reload();
+				
+					}
+				if (l1<r3 && r1>l3 && t1<b3 && b1>t3) {
+					alert("碰到了")
+					clearInterval(timer6);
+					if (timer10) {
+						clearInterval(timer10);
+					};
+					clearInterval(timer6);
+					clearInterval(timer2);
+					// move();
+					window.location.reload();
+				}		
+			}
+
+		}, 50)
+
+		// console.log(l1,l2,l3,r1,r2,r3,t1,t2,t3,b1,b2,b3)		  
+		
+
+	}
+	
+</script>
+</html>
